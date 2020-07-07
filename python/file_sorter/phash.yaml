@@ -1,4 +1,4 @@
-!!python/object:pydevtools.find_unique_files.support.HashFile
+!!python/object:file_sorter.support.HashFile
 file_hash_dict:
   C:/Users/danaukes/Dropbox (Personal)/Camera Uploads\2019-08-21 17.53.06.jpg: 10381043985974616256
   C:/Users/danaukes/Dropbox (Personal)/Camera Uploads\2019-08-21 17.53.11.jpg: 13496532169137507490

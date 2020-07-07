@@ -14,7 +14,7 @@ Created on Tue Sep 24 08:15:20 2019
 
 duplicate_folder_path='C:/Users/danaukes/Desktop/duplicates'
 
-import pydevtools.find_unique_files.support as fus
+import file_sorter.support as fus
 import os
 import sys
 import yaml

@@ -1,4 +1,4 @@
-!!python/object:pydevtools.find_unique_files.support.HashFile
+!!python/object:file_sorter.support.HashFile
 file_hash_dict:
   C:/Users/danaukes/Dropbox (ASU)/Mendeley Desktop/Archive1\Abel et al. - 2013 - Algorithms for Designing Pop-Up Cards.pdf: 1266197
   ? C:/Users/danaukes/Dropbox (ASU)/Mendeley Desktop/Archive1\Alexander, Allen, Dutta

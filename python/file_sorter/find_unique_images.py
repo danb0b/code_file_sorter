@@ -5,8 +5,8 @@ Created on Mon Oct  7 13:50:03 2019
 @author: danaukes
 """
 
-import pydevtools.find_unique_files.images as fui
-import pydevtools.find_unique_files.support as fus
+import file_sorter.images as fui
+import file_sorter.support as fus
 
 #if __name__=='__main__':
 #    aname = 'a.jpg'
