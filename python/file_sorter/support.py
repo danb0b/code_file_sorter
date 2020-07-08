@@ -59,11 +59,13 @@ def scan_compare_dir(*compare_dirs,hasher = None, file_filter = None, recursive=
             for dirpath,dirnames,filenames in os.walk(compare_dir):
                 filenames = [os.path.join(dirpath,item) for item in filenames]
                 filenames = filter_files(filenames,file_filter)
+                
                 if local_hashfile is not None:
                     hash_file = HashFile.build(filenames,hasher)
                     hash_file.save(dirpath,local_hashfile)
-#                compare_files.extend(full_file_names)
+
                 print('finding files',dirpath)
+
                 all_compare_files.extend(filenames)
         else:
             dirpath = compare_dir

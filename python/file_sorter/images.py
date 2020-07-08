@@ -81,24 +81,30 @@ def gen_p_hash_alt(aname,d=32, d2 = 18):
     return p_hash
 
 def gen_p_hash(aname,d=32, d2 = 18):
-    i=PIL.Image.open(aname)
-    a = i.convert('L')
-    s = square_shrink(a,d)
-    adct = dct2(numpy.array(s))
-    adct2 = adct[:d2,:d2]
-    mean = adct2.flatten()[1:].mean()
-    p_hash  = bool_array_to_int(adct2>mean)
-    if p_hash==0:
-        p_hash = gen_p_hash_alt(aname,d,d2)
-    return p_hash
+    try:
+        i=PIL.Image.open(aname)
+        a = i.convert('L')
+        s = square_shrink(a,d)
+        adct = dct2(numpy.array(s))
+        adct2 = adct[:d2,:d2]
+        mean = adct2.flatten()[1:].mean()
+        p_hash  = bool_array_to_int(adct2>mean)
+        if p_hash==0:
+            p_hash = gen_p_hash_alt(aname,d,d2)
+        return p_hash
+    except PIL.UnidentifiedImageError:
+        return None
 
 def gen_p_hash_opt(aname,d=32, d2 = 18):
-    adct2 = dct2(numpy.array(square_shrink(PIL.Image.open(aname).convert('L'),d)))[:d2,:d2]
-    mean = adct2.flatten()[1:].mean()
-    p_hash  = bool_array_to_int(adct2>mean)
-    if p_hash==0:
-        p_hash = gen_p_hash_alt(aname,d,d2)
-    return p_hash
+    try:
+        adct2 = dct2(numpy.array(square_shrink(PIL.Image.open(aname).convert('L'),d)))[:d2,:d2]
+        mean = adct2.flatten()[1:].mean()
+        p_hash  = bool_array_to_int(adct2>mean)
+        if p_hash==0:
+            p_hash = gen_p_hash_alt(aname,d,d2)
+        return p_hash
+    except PIL.UnidentifiedImageError:
+        return None
 
 def int_to_img(phash):
     a2=int_to_bool_array(phash)
