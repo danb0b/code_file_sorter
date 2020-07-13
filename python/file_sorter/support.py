@@ -105,10 +105,13 @@ def hash_file(filename):
     
     file_hash = hashlib.sha256() # Create the hash object, can use something other than `.sha256()` if you wish
     with open(filename, 'rb') as f: # Open the file to read it's bytes
-        fb = f.read(BLOCK_SIZE) # Read from the file. Take in the amount declared above
-        while len(fb) > 0: # While there is still data being read from the file
-            file_hash.update(fb) # Update the hash
-            fb = f.read(BLOCK_SIZE) # Read the next block from the file
+        try:
+            fb = f.read(BLOCK_SIZE) # Read from the file. Take in the amount declared above
+            while len(fb) > 0: # While there is still data being read from the file
+                file_hash.update(fb) # Update the hash
+                fb = f.read(BLOCK_SIZE) # Read the next block from the file
+        except OSError:
+            pass
     
     return file_hash.hexdigest() # Get the hexadecimal digest of the hash
     
