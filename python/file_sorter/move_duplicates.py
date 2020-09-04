@@ -24,7 +24,7 @@ force = True
 
 def load_progress(filename):           
     with open(filename,'r') as f:
-        source_files,matched_files, unmatched_files = yaml.load(f)
+        source_files,matched_files, unmatched_files = yaml.load(f,Loader=yaml.FullLoader)
     return source_files,matched_files, unmatched_files
 
 filename = 'progress.yaml'

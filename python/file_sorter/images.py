@@ -120,7 +120,7 @@ if __name__=='__main__':
 #    p1 = 'C:/Users/danaukes/Dropbox (Personal)/Camera Uploads'    
 #    support.rebuild_compare_info(p1,hasher = gen_p_hash_opt,file_filter = filter_img_filetype, filename='image_compare_info.yaml')
 #    with open('image_compare_info.yaml') as f:
-#        image_compare_info = yaml.load(f)
+#        image_compare_info = yaml.load(f,Loader=yaml.FullLoader)
 #
 #    for key,value in image_compare_info['hash_file_dict'].items():
 #        if len(value)>1:
