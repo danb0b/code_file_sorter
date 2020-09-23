@@ -41,12 +41,31 @@ class HashFile(object):
         
         return new
     
-    def save(self,directory,filename):
-        with open(os.path.join(directory,filename),'w') as f:
+    def save(self,*args):
+        with open(os.path.join(*args),'w') as f:
             yaml.dump(self,f)
+
+    @classmethod            
+    def load(cls,*args):
+        with open(os.path.join(*args)) as f:
+            new = yaml.load(f,Loader=yaml.FullLoader)
+        return new
+    
+    def merge(self,other):
+        for key, value in other.hash_file_dict.items():
+            if key in self.hash_file_dict:
+                self.hash_file_dict[key].extend(value)
+            else:
+                self.hash_file_dict[key]=value.copy()
+        self.file_hash_dict.update(other.file_hash_dict)
+        self.hashes.extend(other.hashes)
+
         
 def filter_files(items,file_filter):
     return [item for item in items if (file_filter(item))]
+
+# def scan_file_list(list):
+#     return HashFile.build(all_compare_files,hasher)
 
 def scan_compare_dir(*compare_dirs,hasher = None, file_filter = None, recursive=False,local_hashfile = None):
     hasher = hasher or hash_filesize 
