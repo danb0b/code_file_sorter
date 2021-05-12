@@ -23,7 +23,6 @@ def read_url(filename):
 def filter_urls(filename):
     return os.path.splitext(filename)[1] in ['.url']
     
-
         
 if __name__=='__main__':
     orig = 'C:/Users/danaukes/Dropbox (Personal)/bookmarks'    
