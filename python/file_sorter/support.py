@@ -101,12 +101,12 @@ def scan_compare_dir(*compare_dirs,hasher = None, file_filter = None, recursive=
 
             all_compare_files.extend(filenames)
             
-        if local_hashfile is None:
-        
-            global_hash_file = HashFile.build(all_compare_files,hasher)
-            return global_hash_file
-        else:
-            return None
+    if local_hashfile is None:
+    
+        global_hash_file = HashFile.build(all_compare_files,hasher)
+        return global_hash_file
+    else:
+        return None
 
 
 def filter_none(filename):
