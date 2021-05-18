@@ -29,9 +29,12 @@ same_size = set(compare1.hashes).intersection(set(compare2.hashes))
 local_files_to_check = [item for key in same_size for item in compare1.hash_file_dict[key]]
 remote_files_to_check = [item for key in same_size for item in compare2.hash_file_dict[key]]
 
-local_compare2 = fus.scan_list(*local_files_to_check,directories_recursive=False,file_filter = fus.filter_none,hasher=fus.hash_file)
-local_compare2.save('sha256_local.yaml')
-local_compare2.save(os.path.expanduser('~'),'sha256_local.yaml')
+#local_compare2 = fus.scan_list(*local_files_to_check,directories_recursive=False,file_filter = fus.filter_none,hasher=fus.hash_file)
+#local_compare2.save(os.path.expanduser('~'),'sha256_local.yaml')
+remote_compare2 = fus.scan_list(*remote_files_to_check,directories_recursive=False,file_filter = fus.filter_none,hasher=fus.hash_file)
+remote_compare2.save(os.path.expanduser('~'),'sha256_remote.yaml')
+
+
 # compare1i = fus.scan_compare_dir(path1, recursive=True,file_filter=fui.filter_img_filetype,hasher=fui.gen_p_hash_opt)
 # compare1i.save('./','hash1i.yaml')
 # with open('hash1i.yaml') as f:
