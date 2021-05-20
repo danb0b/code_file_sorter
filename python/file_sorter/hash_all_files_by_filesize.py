@@ -10,12 +10,7 @@ import file_sorter.images as fui
 import yaml
 import os
 
-#path1 = r'Y:\2020\DCIM'
-#path1 = r'C:\Users\danaukes\Dropbox (Personal)\Pictures'
-#path1 = r'C:\Users\danaukes\Desktop\Camera'
 path1 = r'/home/danaukes/nas/photos/2021'
 path2 = r'/home/danaukes/nas/photos/2020'
-# path2 = r'C:\Users\danaukes\Dropbox (Personal)\Camera Uploads from Sara'
-# hash1 = fus.scan_compare_dir(path1, recursive=True,file_filter=fus.filter_none,hasher=fus.hash_file,local_hashfile='hash_sha256.yaml')
 hash1 = fus.scan_list(path1,path2,directories_recursive=True,file_filter=fus.filter_none,hasher=fus.hash_filesize,directory_hashfile_name='hash_filesize.yaml')
 hash1.save(os.path.expanduser('~'),'size_remote.yaml')
