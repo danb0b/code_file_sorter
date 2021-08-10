@@ -14,7 +14,7 @@ from PIL.Image import Image
 import matplotlib.pyplot as plt
 import os
 import yaml
-import support
+import file_sorter.support as support
 #Image.resize()
 
 #d = 64

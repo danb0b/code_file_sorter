@@ -8,6 +8,11 @@ Created on Thu Oct  3 09:38:49 2019
 import os
 import yaml
 
+def fix(path_in):
+    path_out = os.path.normpath(os.path.abspath(os.path.expanduser(path_in)))
+    return path_out
+
+
 class HashFile(object):
     def __init__(self,hash_file_dict,file_hash_dict,hashes):
         self.hash_file_dict = hash_file_dict
@@ -16,7 +21,7 @@ class HashFile(object):
 #        self.comparison_type = comparison_type
 
     @classmethod
-    def build(cls,*compare_files,hasher=None):
+    def build(cls,*compare_files,hasher=None,verbose=False):
         compare_hash_dict = {}
         compare_hashes = []
         compare_hash_dict_rev={}
@@ -34,8 +39,9 @@ class HashFile(object):
                 compare_hash_dict_rev[img_hash] = [filename]
             else:
                 compare_hash_dict_rev[img_hash].append(filename)
-            if ii%10==0:
-                print('getting file info',ii,l)
+            if verbose:
+                if ii%10==0:
+                    print('getting file info',ii,l)
             ii+=1
         
         compare_hash_set = list(set(compare_hashes))
@@ -44,7 +50,7 @@ class HashFile(object):
         return new
     
     def save(self,*args):
-        with open(os.path.join(*args),'w') as f:
+        with open(os.path.normpath(os.path.expanduser(os.path.join(*args))),'w') as f:
             yaml.dump(self,f)
 
     @classmethod            
@@ -69,7 +75,7 @@ def filter_files(items,file_filter):
 # def scan_file_list(list):
 #     return HashFile.build(all_compare_files,hasher)
 
-def scan_list(*compare_paths,hasher = None, file_filter = None, directories_recursive=False,directory_hashfile_name = None):
+def scan_list(*compare_paths,hasher = None, file_filter = None, directories_recursive=False,directory_hashfile_name = None,verbose=False):
     hasher = hasher or hash_filesize 
     file_filter = file_filter or filter_none
     
@@ -77,23 +83,27 @@ def scan_list(*compare_paths,hasher = None, file_filter = None, directories_recu
     global_hash_file = HashFile.build(hasher=hasher)
 
     for item in compare_paths:
+        item = fix(item)
         # print(item)
         if os.path.isdir(item):
             if directories_recursive:
                 for dirpath,dirnames,filenames in os.walk(item):
+                    dirpath = fix(dirpath)
                     filenames = [os.path.join(dirpath,item) for item in filenames]
                     filenames = filter_files(filenames,file_filter)
                     
                     hash_file = HashFile.build(*filenames,hasher=hasher)
                     if directory_hashfile_name is not None:
                         hash_file.save(dirpath,directory_hashfile_name)
-    
-                    print('finding files',dirpath)
+
+                    if verbose:
+                        print('finding files',dirpath)
     
                     all_compare_files.extend(filenames)
                     global_hash_file.merge(hash_file)
             else:
-                dirpath = compare_dir
+                dirpath = item
+                dirpath = fix(dirpath)
                 filenames = os.listdir(dirpath)
                 filenames = [os.path.join(dirpath,item) for item in filenames]
                 filenames = [item for item in filenames if os.path.isfile(item)]
@@ -102,8 +112,9 @@ def scan_list(*compare_paths,hasher = None, file_filter = None, directories_recu
                 hash_file = HashFile.build(*filenames,hasher=hasher)
                 if directory_hashfile_name is not None:
                     hash_file.save(dirpath,directory_hashfile_name)
-    
-                print('finding files',dirpath)
+
+                if verbose:
+                    print('finding files',dirpath)
     
                 all_compare_files.extend(filenames)
                 global_hash_file.merge(hash_file)
@@ -111,7 +122,8 @@ def scan_list(*compare_paths,hasher = None, file_filter = None, directories_recu
         else:
             hash_file = HashFile.build(item,hasher=hasher)
 
-            print('finding files',item)
+            if verbose:
+                print('finding files',item)
 
             all_compare_files.append(item)
             global_hash_file.merge(hash_file)
@@ -119,6 +131,12 @@ def scan_list(*compare_paths,hasher = None, file_filter = None, directories_recu
     return global_hash_file
 
 def filter_none(filename):
+    return True
+
+def filter_yaml(filename):
+    fn,ext = os.path.splitext(filename)
+    if ext in ['.yaml','.yml']:
+        return False
     return True
 
 def hash_filesize(filename):
