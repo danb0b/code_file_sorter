@@ -67,5 +67,7 @@ if __name__=='__main__':
     for item in to_remove:
         if os.path.exists(item):
             if args.remove:
+                if args.verbose:
+                    print('removing: ', item)
                 os.remove(item)
         

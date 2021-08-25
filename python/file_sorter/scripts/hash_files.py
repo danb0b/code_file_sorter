@@ -71,6 +71,6 @@ if __name__=='__main__':
             duplicates2.extend(value)
             
     if args.verbose:
-        print('Resulting Duplicates:',duplicates)
+        print('Resulting Duplicates:',duplicates2)
         
         
