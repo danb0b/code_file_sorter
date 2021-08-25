@@ -56,7 +56,7 @@ class HashFile(object):
     @classmethod            
     def load(cls,*args):
         with open(os.path.join(*args)) as f:
-            new = yaml.load(f,Loader=yaml.FullLoader)
+            new = yaml.load(f,Loader=yaml.Loader)
         return new
     
     def merge(self,other):
