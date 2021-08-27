@@ -19,9 +19,10 @@ if __name__=='__main__':
     
     parser.add_argument('path',metavar='path',type=str,help='path', default = './')
     parser.add_argument('-o','--output',dest='output',default = None)
-    parser.add_argument('-r','--recursive',dest='recursive',action='store_true', default = None)
-    parser.add_argument('-v','--verbose',dest='verbose',action='store_true', default = None)
+    parser.add_argument('-r','--recursive',dest='recursive',action='store_true', default = False)
+    parser.add_argument('-v','--verbose',dest='verbose',action='store_true', default = False)
     parser.add_argument('-m','--method',dest='method',default = None)
+    parser.add_argument('-s','--save-hashfile',dest='save_hashfile',action='store_true', default = False)
     
     args = parser.parse_args()
 
@@ -29,10 +30,12 @@ if __name__=='__main__':
     
     if method=='size':
         hasher = fus.hash_filesize
-        hashfile_name = 'hash_filesize.yaml'
+        if args.save_hashfile:
+            hashfile_name = 'hash_filesize.yaml'
     elif method=='sha256':
         hasher = fus.hash_file
-        hashfile_name = 'hash_sha256.yaml'
+        if args.save_hashfile:
+            hashfile_name = 'hash_sha256.yaml'
     else:
         raise(Exception('hasher type not valid'))
     
