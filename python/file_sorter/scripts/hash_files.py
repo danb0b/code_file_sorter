@@ -28,6 +28,8 @@ if __name__=='__main__':
 
     method = args.method or 'size'
     
+    hashfile_name = None
+    
     if method=='size':
         hasher = fus.hash_filesize
         if args.save_hashfile:
