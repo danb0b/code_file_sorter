@@ -50,18 +50,24 @@ if __name__=='__main__':
     # path2 = r'/home/danaukes/nas/photos/2020'
     path = os.path.normpath(os.path.abspath(os.path.expanduser(args.path)))
     if os.path.splitext(path)[1]=='.yaml' or os.path.splitext(path)[1]=='.yml':
-        hf = fus.HashFile.load(path)
-        files = hf.file_hash_dict.keys()
-        duplicates = []
-
-        for key,value in hf.hash_file_dict.items():
-            if len(value)>1:
-                duplicates.extend(value)
-
-        if args.verbose:
-            print('Duplicates to check:',duplicates)
-
-        hash1 = fus.scan_list(*duplicates,directories_recursive=args.recursive,file_filter=fus.filter_yaml,hasher=hasher,directory_hashfile_name=hashfile_name,verbose=args.verbose)
+        with open(path) as f:
+            new_item = yaml.load(f,Loader=yaml.Loader)
+    
+        if isinstance(new_item,fus.HashFile):
+            # hf = fus.HashFile.load(path)
+            files = new_item.file_hash_dict.keys()
+            duplicates = []
+    
+            for key,value in new_item.hash_file_dict.items():
+                if len(value)>1:
+                    duplicates.extend(value)
+    
+            if args.verbose:
+                print('Duplicates to check:',duplicates)
+    
+            hash1 = fus.scan_list(*duplicates,directories_recursive=args.recursive,file_filter=fus.filter_yaml,hasher=hasher,directory_hashfile_name=hashfile_name,verbose=args.verbose)
+        elif isinstance(new_item,list):
+            hash1 = fus.scan_list(*new_item,directories_recursive=args.recursive,file_filter=fus.filter_yaml,hasher=hasher,directory_hashfile_name=hashfile_name,verbose=args.verbose)
     else:
         hash1 = fus.scan_list(path,directories_recursive=args.recursive,file_filter=fus.filter_yaml,hasher=hasher,directory_hashfile_name=hashfile_name,verbose=args.verbose)
     print(yaml.dump(hash1))

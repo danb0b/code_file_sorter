@@ -38,28 +38,36 @@ if __name__=='__main__':
     #     else:
     #         os.makedirs(copy_path)
     
-    duplicates = []
 
-    for key,value in local_compare2.hash_file_dict.items():
-        if len(value)>1:
-            # print(value)
-            duplicates.append(value.copy())
     
     to_remove = []
     to_keep = []
-    for files in duplicates:
-        # l = len(files)
-        # where = [1*('recovery' in path) for path in files]
-        # m = sum(where)
-        keep = files[0]
-        to_keep.append(keep)
-        if not os.path.exists(keep):
-            raise(Exception('re-run!'))
-        # toss = files
-        # print('keeping: ',keep,'\ntossing: ',files)
-        to_remove.extend(files[1:])
-        # for item in files[1:]:
+    duplicates = []
 
+    if isinstance(local_compare2,fus.HashFile):
+
+
+        for key,value in local_compare2.hash_file_dict.items():
+            if len(value)>1:
+                # print(value)
+                duplicates.append(value.copy())
+        
+        for files in duplicates:
+            # l = len(files)
+            # where = [1*('recovery' in path) for path in files]
+            # m = sum(where)
+            keep = files[0]
+            to_keep.append(keep)
+            if not os.path.exists(keep):
+                raise(Exception('re-run!'))
+            # toss = files
+            # print('keeping: ',keep,'\ntossing: ',files)
+            to_remove.extend(files[1:])
+            # for item in files[1:]:
+
+    elif isinstance(local_compare2,list):
+        to_remove.extend(local_compare2)
+        
     if args.verbose:
         print('to keep:\n',yaml.dump(to_keep))
         print('to remove:\n',yaml.dump(to_remove))
