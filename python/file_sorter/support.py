@@ -55,7 +55,7 @@ class HashFile(object):
 
     @classmethod            
     def load(cls,*args):
-        with open(os.path.join(*args)) as f:
+        with open(os.path.normpath(os.path.expanduser(os.path.join(*args)))) as f:
             new = yaml.load(f,Loader=yaml.Loader)
         return new
     
@@ -177,7 +177,7 @@ def save_progress(source_files,matched_files,unmatched_files):
 def rebuild_compare_info(*compare_dirs, filename = 'compare_info.yaml',**kwargs):
     if os.path.exists(filename):
         os.remove(filename)
-    compare_info = scan_compare_dir(*compare_dirs, **kwargs)
+    compare_info = scan_list(*compare_dirs, **kwargs)
     compare_info.save('./',filename)
     
 def find_items_with_matching_sizes(compare_size_dict_rev):

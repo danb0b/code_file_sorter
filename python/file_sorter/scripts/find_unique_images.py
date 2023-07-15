@@ -8,6 +8,10 @@ Created on Mon Oct  7 13:50:03 2019
 import file_sorter.images as fui
 import file_sorter.support as fus
 
-path = 'C:/Users/danaukes/Dropbox (ASU)/idealab/presentations/2020-03-05 Research Talk/reduced/images-reduced'
-compare_info = fus.scan_compare_dir(path, recursive=True,local_hashfile = 'hash.yaml',file_filter=fui.filter_img_filetype,hasher=fui.gen_p_hash_opt)
-#compare_info.save('./','phash.yaml')
+path = '/home/danaukes/syncthing/Camera/'
+compare_info = fus.scan_list(path, directories_recursive=True,directory_hashfile_name = 'hash.yaml',file_filter=fui.filter_img_filetype,hasher=fui.gen_p_hash_opt)
+compare_info.save('~/phash.yaml')
+compare_info2=fus.HashFile.load('~/phash.yaml')
+for key,value in compare_info2.hash_file_dict.items():
+    if len(value)>1:
+        print(key,value)
